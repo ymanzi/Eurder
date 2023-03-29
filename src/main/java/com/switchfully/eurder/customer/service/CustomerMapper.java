@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class CustomerMapper {
     public Customer fromDto(CustomerDto customerDto) {
-        return new Customer(customerDto.getName(), customerDto.getContact(), customerDto.getAddress());
+        return new Customer(customerDto.name(), customerDto.contact(), customerDto.address());
     }
 
     public Customer fromDto(CreateCustomerDto createCustomerDto) {
@@ -24,13 +24,13 @@ public class CustomerMapper {
     }
 
     public CustomerDto toDto(Customer customer) {
-        return new CustomerDto(customer.getName(), customer.getContact(), customer.getAddress());
+        return new CustomerDto(customer.getId(), customer.getName(), customer.getContact(), customer.getAddress());
     }
 
     public List<CustomerDto> toDto(List<Customer> listOfCustomer) {
         return listOfCustomer
                 .stream()
-                .map(customer -> new CustomerDto(customer.getName(), customer.getContact(), customer.getAddress()))
+                .map(this::toDto)
                 .toList();
     }
 }

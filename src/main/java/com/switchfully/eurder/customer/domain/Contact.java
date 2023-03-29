@@ -2,9 +2,8 @@ package com.switchfully.eurder.customer.domain;
 
 import com.switchfully.eurder.utils.Utils;
 
-public class Contact {
-    private String email;
-    private String phone;
+
+public record Contact(String email, String phone) {
 
     public Contact(String email, String phone) {
         Utils.fieldIsPresent(email, "email");
@@ -12,13 +11,5 @@ public class Contact {
 
         this.email = email;
         this.phone = phone;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPhone() {
-        return phone;
     }
 }

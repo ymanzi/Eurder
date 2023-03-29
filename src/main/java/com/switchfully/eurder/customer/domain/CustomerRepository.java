@@ -17,7 +17,7 @@ public class CustomerRepository {
     }
 
     public Customer save(Customer newCustomer) {
-        String email = newCustomer.getContact().getEmail();
+        String email = newCustomer.getContact().email();
         checkIfEmailAlreadyExist(newCustomer);
         customerByEmail.put(email, newCustomer);
         return customerByEmail.get(email);
@@ -35,7 +35,7 @@ public class CustomerRepository {
     }
 
     public void checkIfEmailAlreadyExist(Customer customer){
-        String emailToCheck = customer.getContact().getEmail();
+        String emailToCheck = customer.getContact().email();
         List<String> listOfCustomer = customerByEmail
                 .keySet()
                 .stream()

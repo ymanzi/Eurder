@@ -2,7 +2,6 @@ package com.switchfully.eurder.customer.domain;
 
 import com.switchfully.eurder.exceptions.CustomerWithThatEmailAlreadyExist;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -10,14 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CustomerRepositoryTest {
 
-    private CustomerRepository customerRepository = new CustomerRepository();
-    private Customer customer = new Customer(new Name("first", "last"),
+    private final CustomerRepository customerRepository = new CustomerRepository();
+    private final Customer customer = new Customer(new Name("first", "last"),
             new Contact("email", "phone"),
             new Address("street", "number", "zip", "city"));
 
-    @BeforeEach
-    void setUp() {
-    }
 
     @Test
     void save_whenSavingACustomer_returnCorrespondingCustomer() {

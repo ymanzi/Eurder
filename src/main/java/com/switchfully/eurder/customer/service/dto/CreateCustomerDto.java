@@ -1,21 +1,14 @@
 package com.switchfully.eurder.customer.service.dto;
-
-import com.switchfully.eurder.customer.domain.Address;
-import com.switchfully.eurder.customer.domain.Contact;
-import com.switchfully.eurder.customer.domain.Name;
-
 public class CreateCustomerDto {
 
-    private String firstname;
-    private String lastname;
-    private String email;
-    private String phone;
-    private String street;
-    private String houseNumber;
-    private String zipCode;
-    private String city;
-    private Contact contact;
-    private Address address;
+    private final String firstname;
+    private final String lastname;
+    private final String email;
+    private final String phone;
+    private final String street;
+    private final String houseNumber;
+    private final String zipCode;
+    private final String city;
 
     public CreateCustomerDto(String firstname
                             , String lastname

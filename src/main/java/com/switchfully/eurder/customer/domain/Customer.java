@@ -1,13 +1,16 @@
 package com.switchfully.eurder.customer.domain;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class Customer {
+    private final UUID id;
     private Name name;
     private Contact contact;
     private Address address;
 
     public Customer(Name name, Contact contact, Address address) {
+        this.id = UUID.randomUUID();
         this.name = name;
         this.contact = contact;
         this.address = address;
@@ -24,6 +27,10 @@ public class Customer {
 
     public Address getAddress() {
         return address;
+    }
+
+    public UUID getId() {
+        return id;
     }
 
     @Override
