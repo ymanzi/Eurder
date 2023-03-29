@@ -39,4 +39,31 @@ public class ItemRepository {
                 .sorted(Comparator.comparing(Item::getStockAmount))
                 .toList();
     }
+
+    public List<Item> getLow() {
+        return itemsById
+                .values()
+                .stream()
+                .sorted(Comparator.comparing(Item::getStockAmount))
+                .filter(item -> item.getStockSupply().equals(Supply.STOCK_LOW))
+                .toList();
+    }
+
+    public List<Item> getMedium() {
+        return itemsById
+                .values()
+                .stream()
+                .sorted(Comparator.comparing(Item::getStockAmount))
+                .filter(item -> item.getStockSupply().equals(Supply.STOCK_MEDIUM))
+                .toList();
+    }
+
+    public List<Item> getHigh() {
+        return itemsById
+                .values()
+                .stream()
+                .sorted(Comparator.comparing(Item::getStockAmount))
+                .filter(item -> item.getStockSupply().equals(Supply.STOCK_HIGH))
+                .toList();
+    }
 }

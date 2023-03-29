@@ -26,6 +26,23 @@ public class ItemController {
         return itemService.getAll(adminId);
     }
 
+    @GetMapping(path = "/stock/low" , produces = "application/json")
+    public List<ItemDto> getLow(@RequestHeader String adminId){
+        return itemService.getLow(adminId);
+    }
+
+    @GetMapping(path = "/stock/medium" , produces = "application/json")
+    public List<ItemDto> getMedium(@RequestHeader String adminId){
+        return itemService.getMedium(adminId);
+    }
+
+
+    @GetMapping(path = "/stock/high" , produces = "application/json")
+    public List<ItemDto> getHigh(@RequestHeader String adminId){
+        return itemService.getHigh(adminId);
+    }
+
+
     //=======================================  POST ==================================================
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
