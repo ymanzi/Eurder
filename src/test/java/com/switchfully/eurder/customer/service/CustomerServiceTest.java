@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -75,10 +76,10 @@ class CustomerServiceTest {
     @Test
     void getByEmail_givenAValidEmailAndAdminAccess_returnCorrespondingCustomerDto() {
         //Given
-        Mockito.when(customerRepository.getByEmail(org.mockito.ArgumentMatchers.anyString())).thenReturn(Optional.of(customer));
+        Mockito.when(customerRepository.getById(org.mockito.ArgumentMatchers.any())).thenReturn(Optional.of(customer));
 
         //When
-        CustomerDto requestedCustomerDto = customerService.getByEmail("email",  "admin");
+        CustomerDto requestedCustomerDto = customerService.getById(customer.getId(),  "admin");
 
         //Then
         assertEquals(customerDto, requestedCustomerDto);
@@ -87,18 +88,18 @@ class CustomerServiceTest {
     @Test
     void getByEmail_givenAnUnknownEmailAndAdminAccess_thenThrowNonExistentItemException() {
         //Given
-        Mockito.when(customerRepository.getByEmail(org.mockito.ArgumentMatchers.anyString())).thenReturn(Optional.ofNullable(null));
+        Mockito.when(customerRepository.getById(org.mockito.ArgumentMatchers.any())).thenReturn(Optional.ofNullable(null));
 
         //Then
-        assertThrows(NonExistentItemException.class, () -> customerService.getByEmail("unknownEmail",  "admin"));
+        assertThrows(NonExistentItemException.class, () -> customerService.getById(UUID.randomUUID(),  "admin"));
     }
 
     @Test
     void getByEmail_givenANotAdminAccess_thenThrowUnauthorizedException() {
         //Given
-        Mockito.when(customerRepository.getByEmail(org.mockito.ArgumentMatchers.anyString())).thenReturn(Optional.ofNullable(null));
+        Mockito.when(customerRepository.getById(org.mockito.ArgumentMatchers.any())).thenReturn(Optional.ofNullable(null));
 
         //Then
-        assertThrows(UnauthorizedException.class, ()-> customerService.getByEmail("email", "123"));
+        assertThrows(UnauthorizedException.class, ()-> customerService.getById(UUID.randomUUID(), "123"));
     }
 }

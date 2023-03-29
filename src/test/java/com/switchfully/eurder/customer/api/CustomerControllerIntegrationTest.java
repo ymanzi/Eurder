@@ -15,10 +15,12 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CustomerControllerIntegrationTest {
     @Autowired
     private CustomerController customerController;
@@ -97,22 +99,21 @@ class CustomerControllerIntegrationTest {
     }
 
     @Test
-    void getByEmail_givenARepositoryWithCustomers_thenRetrieveCorrespondingCustomer() {
+    void getById_givenARepositoryWithCustomers_thenRetrieveCorrespondingCustomer() {
         //Given
         CustomerDto c1 = customerController.create(createCustomerDto);
-        CustomerDto c2 = customerController.create(createCustomerDto2);
+        customerController.create(createCustomerDto2);
 
         //When
         CustomerDto customer =
                 RestAssured
                         .given()
                         .header("adminId", "admin")
-                        .header("email", "email")
                         .accept(ContentType.JSON)
                         .contentType(ContentType.JSON)
                         .when()
                         .port(port)
-                        .get("/customers/email")
+                        .get("/customers/" + c1.id())
                         .then()
                         .extract()
                         .as(CustomerDto.class);
@@ -122,18 +123,17 @@ class CustomerControllerIntegrationTest {
     }
 
     @Test
-    void getByEmail_givenARequestWithoutAdminAccess_thenGetUnauthorizedStatusCode() {
+    void getById_givenARequestWithoutAdminAccess_thenGetUnauthorizedStatusCode() {
         //When
         int statusCode =
                 RestAssured
                         .given()
                         .headers("adminId", "123")
-                        .header("email", "email")
                         .accept(ContentType.JSON)
                         .contentType(ContentType.JSON)
                         .when()
                         .port(port)
-                        .get("/customers/email").getStatusCode();
+                        .get("/customers/" + UUID.randomUUID()).getStatusCode();
 
         //Then
         assertEquals(HttpStatus.UNAUTHORIZED.value(), statusCode);

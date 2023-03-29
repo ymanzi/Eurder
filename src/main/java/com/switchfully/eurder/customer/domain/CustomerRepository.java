@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class CustomerRepository {
@@ -32,6 +33,14 @@ public class CustomerRepository {
 
     public Optional<Customer> getByEmail(String email) {
         return Optional.ofNullable(customerByEmail.get(email));
+    }
+
+    public Optional<Customer> getById(UUID id) {
+        return customerByEmail
+                .values()
+                .stream()
+                .filter(customer -> customer.getId().equals(id))
+                .findFirst();
     }
 
     public void checkIfEmailAlreadyExist(Customer customer){

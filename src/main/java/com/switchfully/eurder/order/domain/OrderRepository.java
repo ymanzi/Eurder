@@ -7,15 +7,15 @@ import java.util.UUID;
 
 @Repository
 public class OrderRepository {
-    private HashMap<UUID, Order> ordersById;
+    private final HashMap<UUID, Order> ordersById;
 
     public OrderRepository() {
         ordersById = new HashMap<>();
     }
 
-    public Order save(Order order) {
+    public double save(Order order) {
         UUID orderId = order.getOrderId();
         ordersById.put(orderId, order);
-        return ordersById.get(orderId);
+        return ordersById.get(orderId).getPrice() ;
     }
 }

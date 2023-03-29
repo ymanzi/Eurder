@@ -14,8 +14,8 @@ import java.util.UUID;
 
 @Service
 public class CustomerService {
-    private CustomerMapper customerMapper;
-    private CustomerRepository customerRepository;
+    private final CustomerMapper customerMapper;
+    private final CustomerRepository customerRepository;
 
     public CustomerService(CustomerMapper customerMapper, CustomerRepository customerRepository) {
         this.customerMapper = customerMapper;
@@ -34,12 +34,12 @@ public class CustomerService {
         return customerMapper.toDto(listOfCustomers);
     }
 
-    public CustomerDto getByEmail(String email, String adminId) {
+    public CustomerDto getById(UUID userId, String adminId) {
         Utils.adminAccess(adminId);
-        Optional<Customer> customer = customerRepository.getByEmail(email);
+        Optional<Customer> customer = customerRepository.getById(userId);
 
         if (customer.isEmpty())
-            throw new NonExistentItemException("customer");
+            throw new NonExistentItemException("customer id");
 
         return customerMapper.toDto(customer.get());
     }

@@ -1,18 +1,24 @@
 package com.switchfully.eurder.item.service;
 
+import com.switchfully.eurder.exceptions.NonExistentItemException;
 import com.switchfully.eurder.exceptions.UnauthorizedException;
 import com.switchfully.eurder.item.domain.Item;
 import com.switchfully.eurder.item.domain.ItemRepository;
+import com.switchfully.eurder.item.service.dto.CreateItemDto;
+import com.switchfully.eurder.item.service.dto.ItemDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.UUID;
 
 class ItemServiceTest {
     private final ItemMapper itemMapper = new ItemMapper();
     private final ItemRepository itemRepository = new ItemRepository();
     private final ItemService itemService = new ItemService(itemMapper, itemRepository);
 
-    private CreateItemDto testItemDto = new CreateItemDto("name", "description", 10, 45);
-    private Item testItem = new Item("name", "description", 10, 45);
+    private final CreateItemDto testItemDto = new CreateItemDto("name", "description", 10, 45);
+    private final Item testItem = new Item("name", "description", 10, 45);
 
 
     @Test
@@ -25,5 +31,60 @@ class ItemServiceTest {
     @Test
     void save_whenTryingToSaveAsNonAdmin_thenThrowUnauthorizedException() {
         org.junit.jupiter.api.Assertions.assertThrows(UnauthorizedException.class, () -> itemService.save(testItemDto, "123"));
+    }
+
+    @Test
+    void update_whenUpdatingAnExistingItemAsAdmin_thenReturnUpdatedItem() {
+        //Given
+        itemRepository.save(testItem);
+
+        //When
+        CreateItemDto toUpdateItemDto = new CreateItemDto("updated", "updated", 500, 8);
+        ItemDto returnedItemDto = itemService.update(testItem.getId(), toUpdateItemDto, "admin");
+
+        //Then
+        ItemDto updatedItemDto = new ItemDto(testItem.getId(), "updated", "updated", 500, 8);
+        Assertions.assertThat(returnedItemDto).isEqualTo(updatedItemDto);
+    }
+
+    @Test
+    void update_whenUpdatingAnNonExistingItem_thenThrowNonExistentItemException() {
+
+        //Then
+        CreateItemDto toUpdateItemDto = new CreateItemDto("updated", "updated", 500, 8);
+        org.junit.jupiter.api.Assertions.assertThrows(NonExistentItemException.class, () -> itemService.update(UUID.randomUUID(), toUpdateItemDto, "admin"));
+    }
+
+    @Test
+    void update_whenUpdatingAsANonAdmin_thenThrowUnauthorizedException() {
+
+        //Then
+        CreateItemDto toUpdateItemDto = new CreateItemDto("updated", "updated", 500, 8);
+        org.junit.jupiter.api.Assertions.assertThrows(UnauthorizedException.class, () -> itemService.update(testItem.getId(), toUpdateItemDto, "123"));
+    }
+
+    @Test
+    void getAll_AsANonAdmin_thenThrowUnauthorizedException() {
+
+        //Then
+        org.junit.jupiter.api.Assertions.assertThrows(UnauthorizedException.class, () -> itemService.getAll("123"));
+    }
+
+    @Test
+    void getAll_givenAPopulatedRepository_thenRetrieveAllItemSortedByStockAmount() {
+        //Given
+        Item item1 = new Item("name", "description", 1.6, 30);
+        Item item2 = new Item("name", "description", 1.6, 10);
+        itemRepository.save(testItem);
+        itemRepository.save(item1);
+        itemRepository.save(item2);
+
+
+
+        //When
+        List<ItemDto> listOfItemDto = itemService.getAll("admin");
+
+        //Then
+        Assertions.assertThat(listOfItemDto).containsExactlyElementsOf(itemMapper.toDto(List.of(item2, item1, testItem)));
     }
 }

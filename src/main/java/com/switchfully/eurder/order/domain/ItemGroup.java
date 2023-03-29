@@ -6,13 +6,13 @@ import java.time.LocalDate;
 
 public class ItemGroup {
     private final Item item;
-    private int amount;
+    private final int amount;
     private final LocalDate shippingDate;
 
     public ItemGroup(Item item, int amount) {
         this.item = item;
         this.amount = amount;
-        this.shippingDate = setShippingDate(amount, item.getStock());
+        this.shippingDate = setShippingDate(amount, item.getStockAmount());
     }
 
     private LocalDate setShippingDate(int amount, int stock){

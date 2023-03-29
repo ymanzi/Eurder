@@ -5,7 +5,6 @@ import com.switchfully.eurder.exceptions.UnauthorizedException;
 import com.switchfully.eurder.order.domain.Order;
 import com.switchfully.eurder.order.domain.OrderRepository;
 import com.switchfully.eurder.order.service.dto.CreateOrderDto;
-import com.switchfully.eurder.order.service.dto.OrderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +22,11 @@ public class OrderService {
         this.customerRepository = customerRepository;
     }
 
-    public OrderDto save(CreateOrderDto createOrderDto, String customerEmail) {
+    public double save(CreateOrderDto createOrderDto, String customerEmail) {
         checkCustomer(customerEmail);
 
         Order order = orderMapper.fromDto(createOrderDto);
-        Order savedOrder = orderRepository.save(order);
-        return orderMapper.toDto(savedOrder);
+        return orderRepository.save(order);
     }
 
     public void checkCustomer(String email){

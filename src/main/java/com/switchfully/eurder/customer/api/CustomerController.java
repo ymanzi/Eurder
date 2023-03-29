@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "/customers")
@@ -26,9 +27,9 @@ public class CustomerController {
         return customerService.getAll(adminId);
     }
 
-    @GetMapping(path = "/email", produces = "application/json")
-    public CustomerDto getByEmail(@RequestHeader String email, @RequestHeader String adminId){
-        return customerService.getByEmail(email, adminId);
+    @GetMapping(path = "/{userId}", produces = "application/json")
+    public CustomerDto getById(@PathVariable UUID userId, @RequestHeader String adminId){
+        return customerService.getById(userId, adminId);
     }
 
     //=======================================  POST ==================================================
