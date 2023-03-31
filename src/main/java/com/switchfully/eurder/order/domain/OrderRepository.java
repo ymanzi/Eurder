@@ -30,7 +30,7 @@ public class OrderRepository {
         return ordersById
                 .values()
                 .stream()
-                .filter(order -> order.getCustomerId() == customerId)
+                .filter(order -> order.getCustomerId().equals(customerId))
                 .toList();
     }
 

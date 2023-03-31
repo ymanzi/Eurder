@@ -8,9 +8,7 @@ import com.switchfully.eurder.item.domain.ItemRepository;
 import com.switchfully.eurder.order.domain.ItemGroup;
 import com.switchfully.eurder.order.domain.Order;
 import com.switchfully.eurder.order.domain.OrderRepository;
-import com.switchfully.eurder.order.service.dto.CreateOrderDto;
-import com.switchfully.eurder.order.service.dto.OrderTodayDto;
-import com.switchfully.eurder.order.service.dto.ReportOrdersOfCustomerDto;
+import com.switchfully.eurder.order.service.dto.*;
 import com.switchfully.eurder.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,14 +36,45 @@ public class OrderService {
     public double save(CreateOrderDto createOrderDto, UUID customerId) {
         checkCustomer(customerId);
 
-        Order order = orderMapper.fromDto(createOrderDto, customerId);
+        Order order = createOrderFromCreateOrderDto(createOrderDto, customerId);
         return orderRepository.save(order);
+    }
+
+    public Order createOrderFromCreateOrderDto(CreateOrderDto dto, UUID customerId){
+        List<ItemGroup> listOfItemGroup = dto
+                                            .listOfItemsGroup()
+                                            .stream()
+                                            .map(this::fromItemGroupDto)
+                                            .toList() ;
+        return new Order(listOfItemGroup, customerId);
+    }
+
+    public ItemGroup fromItemGroupDto(ItemGroupDto dto){
+        UUID itemId = dto.itemId();
+        Item item = itemRepository.getById(itemId);
+        return new ItemGroup(item, dto.orderedAmount());
     }
 
     public ReportOrdersOfCustomerDto getByCustomerId(UUID customerId){
         checkCustomer(customerId);
         List<Order> customerOrders = orderRepository.getByCustomerId(customerId);
-        return orderMapper.toReportDto(customerOrders);
+        List<ReportOrderDto> reports = createOrdersReports(customerOrders);
+        double ordersPrice = getOrdersPrice(customerOrders);
+        return  new ReportOrdersOfCustomerDto(reports, ordersPrice);
+    }
+
+    public Double getOrdersPrice(List<Order> orders){
+        return orders
+                .stream()
+                .map(Order::getPrice)
+                .reduce(0.0, Double::sum);
+    }
+
+    public List<ReportOrderDto> createOrdersReports(List<Order> orders){
+        return orders
+                .stream()
+                .map( orderMapper::toDto)
+                .toList();
     }
 
     public List<OrderTodayDto> getTodayOrders(String adminId) {
@@ -77,9 +106,9 @@ public class OrderService {
     }
 
     public void checkCustomer(UUID customerId){
-        if (customerRepository.getById(customerId).isEmpty()){
-            throw new UnauthorizedException();
-        }
+        customerRepository
+                .getById(customerId)
+                .orElseThrow(UnauthorizedException::new);
     }
 
     public Order getOldOrder(UUID orderId, UUID customerId){

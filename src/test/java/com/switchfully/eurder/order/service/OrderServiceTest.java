@@ -7,6 +7,7 @@ import com.switchfully.eurder.item.domain.ItemRepository;
 import com.switchfully.eurder.order.domain.ItemGroup;
 import com.switchfully.eurder.order.domain.OrderRepository;
 import com.switchfully.eurder.order.service.dto.CreateOrderDto;
+import com.switchfully.eurder.order.service.dto.ItemGroupDto;
 import com.switchfully.eurder.order.service.dto.ReportOrdersOfCustomerDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -55,8 +56,8 @@ class OrderServiceTest {
     @Test
     void save_whenSavingOrder_thenReturnOrderPrice() {
         //Given
-        List<ItemGroup> itemGroupList = List.of(new ItemGroup(item, 3),
-                new ItemGroup(item2, 3));
+        List<ItemGroupDto> itemGroupList = List.of(new ItemGroupDto(item.getId(), 3),
+                new ItemGroupDto(item2.getId(), 3));
 
         CreateOrderDto orderDto = new CreateOrderDto(itemGroupList);
 
@@ -68,11 +69,11 @@ class OrderServiceTest {
     @Test
     void getByCustomerId_whenRequestingCustomerOrders_thenReturnCorrespondingOrders() {
         //Given
-        List<ItemGroup> itemGroupList = List.of(new ItemGroup(item, 3),
-                new ItemGroup(item2, 3));
+        List<ItemGroupDto> itemGroupList = List.of(new ItemGroupDto(item.getId(), 3),
+                new ItemGroupDto(item2.getId(), 3));
 
-        List<ItemGroup> itemGroupList2 = List.of(new ItemGroup(item, 3),
-                new ItemGroup(item2, 3));
+        List<ItemGroupDto> itemGroupList2 = List.of(new ItemGroupDto(item.getId(), 3),
+                new ItemGroupDto(item2.getId(), 3));
 
         CreateOrderDto orderDto = new CreateOrderDto(itemGroupList);
         CreateOrderDto orderDto2 = new CreateOrderDto(itemGroupList2);

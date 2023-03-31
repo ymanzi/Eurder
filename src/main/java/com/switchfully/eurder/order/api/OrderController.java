@@ -44,5 +44,4 @@ public class OrderController {
     public List<OrderTodayDto> getTodayOrders(@RequestHeader String adminId){
         return orderService.getTodayOrders(adminId);
     }
-
 }

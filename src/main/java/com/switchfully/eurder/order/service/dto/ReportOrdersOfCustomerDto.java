@@ -3,15 +3,15 @@ package com.switchfully.eurder.order.service.dto;
 import java.util.List;
 
 public class ReportOrdersOfCustomerDto {
-    private final List<ReportOrderDto> listOfOrderDto;
-    private final double price;
+    private List<ReportOrderDto> listOfOrderDto;
+    private double price;
 
-    public ReportOrdersOfCustomerDto(List<ReportOrderDto> listOfOrderDto) {
+    public ReportOrdersOfCustomerDto(){
+    }
+
+    public ReportOrdersOfCustomerDto(List<ReportOrderDto> listOfOrderDto, double price) {
         this.listOfOrderDto = listOfOrderDto;
-        this.price = listOfOrderDto
-                .stream()
-                .map(ReportOrderDto::getPrice)
-                .reduce(0.0, Double::sum);
+        this.price = price;
     }
 
     public List<ReportOrderDto> getListOfOrderDto() {

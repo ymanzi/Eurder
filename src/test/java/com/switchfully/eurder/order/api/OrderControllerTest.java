@@ -1,14 +1,19 @@
 package com.switchfully.eurder.order.api;
 
 import com.switchfully.eurder.customer.domain.*;
+import com.switchfully.eurder.customer.service.dto.CreateCustomerDto;
 import com.switchfully.eurder.exceptions.UnauthorizedException;
 import com.switchfully.eurder.item.domain.Item;
 import com.switchfully.eurder.item.domain.ItemRepository;
+import com.switchfully.eurder.item.service.dto.CreateItemDto;
+import com.switchfully.eurder.item.service.dto.ItemDto;
 import com.switchfully.eurder.order.domain.ItemGroup;
+import com.switchfully.eurder.order.domain.Order;
 import com.switchfully.eurder.order.domain.OrderRepository;
 import com.switchfully.eurder.order.service.OrderMapper;
 import com.switchfully.eurder.order.service.OrderService;
 import com.switchfully.eurder.order.service.dto.CreateOrderDto;
+import com.switchfully.eurder.order.service.dto.ItemGroupDto;
 import com.switchfully.eurder.order.service.dto.ReportOrdersOfCustomerDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -36,46 +41,61 @@ class OrderControllerTest {
 
 
     private OrderController orderController;
-    private OrderService orderService;
-
-    private ItemRepository itemRepository;
-
-    private CustomerRepository customerRepository;
 
     private Item item;
     private Item item2;
     private Customer customer;
     private Customer customer2;
 
+    Customer saveCustomer(CreateCustomerDto createCustomerDto){
+        return RestAssured
+                .given()
+                .body(createCustomerDto)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .when()
+                .port(port)
+                .post("/customers")
+                .then()
+                .extract()
+                .as(Customer.class);
+    }
+
+    Item saveItem(CreateItemDto createItemDto){
+        return RestAssured
+                .given()
+                .body(createItemDto)
+                .contentType(ContentType.JSON)
+                .header("adminId", "admin")
+                .when()
+                .port(port)
+                .post("/items/")
+                .then()
+                .extract()
+                .as(Item.class);
+    }
+
+
     @BeforeEach
     void setUp() {
-        item = new Item("name", "desc", 5.0, 10);
-        item2 = new Item("name2", "desc", 3.0, 0);
-        itemRepository = new ItemRepository();
-        itemRepository.save(item);
-        itemRepository.save(item2);
+        item =saveItem(new CreateItemDto("name", "desc", 5.0, 10));
+        item2 = saveItem(new CreateItemDto("name2", "desc", 3.0, 0));
 
-        customer = new Customer(new Name("f", "l"),
-                new Contact("email", "phone"),
-                new Address("street", "number", "zip", "city")
-        );
-        customer2 = new Customer(new Name("f2", "l2"),
-                new Contact("email2", "phone2"),
-                new Address("street", "number", "zip", "city")
-        );
-        customerRepository = new CustomerRepository();
-        customerRepository.save(customer);
-        customerRepository.save(customer2);
-
-        orderService = new OrderService(new OrderMapper(), new OrderRepository(), itemRepository, customerRepository);
-        orderController = new OrderController(orderService);
+        customer = saveCustomer(new CreateCustomerDto("f", "l",
+                "email", "phone",
+                "street", "number", "zip", "city"
+        ));
+        customer2 = saveCustomer(new CreateCustomerDto("f2", "l2",
+                "email2", "phone2",
+                "street", "number", "zip", "city"
+        ));
     }
 
     @Test
     void create_whenSavingOrder_thenReturnOrderPrice() {
         //Given
-        List<ItemGroup> itemGroupList = List.of(new ItemGroup(item, 3),
-                new ItemGroup(item2, 3));
+        List<ItemGroupDto> itemGroupList = List.of(new ItemGroupDto(item.getId(), 3),
+                new ItemGroupDto(item2.getId(), 3));
 
         CreateOrderDto orderDto = new CreateOrderDto(itemGroupList);
 
@@ -102,8 +122,8 @@ class OrderControllerTest {
     @Test
     void create_whenProvidingUnknownCustomerId_thenReturn401StatusCode() {
         //Given
-        List<ItemGroup> itemGroupList = List.of(new ItemGroup(item, 3),
-                new ItemGroup(item2, 3));
+        List<ItemGroupDto> itemGroupList = List.of(new ItemGroupDto(item.getId(), 3),
+                new ItemGroupDto(item2.getId(), 3));
 
         CreateOrderDto orderDto = new CreateOrderDto(itemGroupList);
 
@@ -120,35 +140,142 @@ class OrderControllerTest {
                 .statusCode(HttpStatus.UNAUTHORIZED.value());
     }
 
-    /*@Test
+    @Test
     void getByCustomerId_whenRequestingCustomerOrders_thenReturnCorrespondingOrders() {
         //Given
-        List<ItemGroup> itemGroupList = List.of(new ItemGroup(item, 3),
-                new ItemGroup(item2, 3));
+        List<ItemGroupDto> itemGroupList = List.of(new ItemGroupDto(item.getId(), 3),
+                new ItemGroupDto(item2.getId(), 3));
 
-        List<ItemGroup> itemGroupList2 = List.of(new ItemGroup(item, 3),
-                new ItemGroup(item2, 3));
+        CreateOrderDto orderDto = new CreateOrderDto(itemGroupList);
 
-        CreateOrderDto orderDto = new CreateOrderDto(itemGroupList, customer.getId());
-        CreateOrderDto orderDto2 = new CreateOrderDto(itemGroupList2, customer2.getId());
-
-
-        orderController.create(orderDto, )
-        orderService.save(orderDto, customer.getId());
-        orderService.save(orderDto, customer.getId());
-        orderService.save(orderDto2, customer2.getId());
+        double savedPrice = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(orderDto)
+                .header("customerId", customer.getId())
+                .log().all()
+                .when()
+                .port(port)
+                .post("/orders/")
+                .then()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value())
+                .extract()
+                .as(double.class);
 
         //When
-        ReportOrdersOfCustomerDto report = orderService.getByCustomerId(customer.getId());
+        ReportOrdersOfCustomerDto orders = RestAssured
+                            .given()
+                            .contentType(ContentType.JSON)
+                            .header("customerId", customer.getId())
+                            .when()
+                            .port(port)
+                            .get("/orders/")
+                            .then()
+                            .assertThat()
+                            .statusCode(HttpStatus.OK.value())
+                            .extract()
+                            .as(ReportOrdersOfCustomerDto.class);
 
         //Then
-        Assertions.assertThat(report.getListOfOrderDto().size()).isEqualTo(2);
+        Assertions.assertThat(orders.getPrice()).isEqualTo(24.0);
     }
 
     @Test
     void getByCustomerId_whenCustomerDoesNotExist_thenTrowUnauthorizedException() {
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .header("customerId", UUID.randomUUID())
+                .when()
+                .port(port)
+                .get("/orders/")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    @Test
+    void orderAgain_whenOrderingSameOrder_thenUpdateTheOldOrder(){
+        //Given
+
+        /// Pass Order
+        List<ItemGroupDto> itemGroupList = List.of(new ItemGroupDto(item.getId(), 3),
+                new ItemGroupDto(item2.getId(), 3));
+
+        CreateOrderDto orderDto = new CreateOrderDto(itemGroupList);
+
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(orderDto)
+                .header("customerId", customer.getId())
+                .log().all()
+                .when()
+                .port(port)
+                .post("/orders/")
+                .then()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .assertThat()
+                .statusCode(HttpStatus.CREATED.value());
+
+
+        /// Get Order Id
+        UUID orderId = RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .header("customerId", customer.getId())
+                .when()
+                .port(port)
+                .get("/orders/")
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+                .as(ReportOrdersOfCustomerDto.class)
+                .getListOfOrderDto()
+                .get(0)
+                .getOrderId();
+
+
+        //Update Item
+        CreateItemDto updateItemDto = new CreateItemDto("update", "update", 10.0, 5);
+
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(updateItemDto)
+                .header("adminId", "admin")
+                .when()
+                .port(port)
+                .put("/items/" + item.getId())
+                .then()
+                .assertThat()
+                .statusCode(HttpStatus.OK.value());
+
+        //When
+        double price = RestAssured
+                        .given()
+                        .contentType(ContentType.JSON)
+                        .body(orderDto)
+                        .header("customerId", customer.getId())
+                        .log().all()
+                        .when()
+                        .port(port)
+                        .post("/orders/" + orderId)
+                        .then()
+                        .contentType(ContentType.JSON)
+                        .log().all()
+                        .assertThat()
+                        .statusCode(HttpStatus.CREATED.value())
+                        .extract()
+                        .as(Double.class);
+
         //Then
-        assertThrows(UnauthorizedException.class, ()-> orderService.getByCustomerId(customer.getId()));
-    }*/
+        assertEquals(39, price);
+    }
 
 }

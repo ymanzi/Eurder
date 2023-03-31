@@ -17,10 +17,6 @@ public class OrderMapper {
         return new OrderDto(order.getOrderId(), order.getListOfItemsGroup(), order.getCustomerId());
     }*/
 
-    public Order fromDto(CreateOrderDto createOrderDto, UUID customerId){
-        return new Order(createOrderDto.getListOfItemsGroup(), customerId);
-    }
-
     public ReportItemGroupDto toDto(ItemGroup itemGroup){
         String itemName = itemGroup.getItem().getName();
         int amount = itemGroup.getAmount();
@@ -46,14 +42,5 @@ public class OrderMapper {
 
         return new ReportOrderDto(id, listOfItemGroupDto, price);
     }
-
-    public ReportOrdersOfCustomerDto toReportDto(List<Order> customerOrders) {
-        List<ReportOrderDto> listOfReport = customerOrders
-                                                .stream()
-                                                .map(this::toDto)
-                                                .toList();
-        return new ReportOrdersOfCustomerDto(listOfReport);
-    }
-
 
 }
