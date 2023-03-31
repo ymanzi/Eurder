@@ -17,6 +17,11 @@ public class ItemRepository {
         itemsById = new HashMap<>();
     }
 
+
+    public Item getById(UUID id){
+        return itemsById.get(id);
+     }
+
     public Item save(Item item) {
         UUID itemId = item.getId();
         itemsById.put(itemId, item);
@@ -40,7 +45,7 @@ public class ItemRepository {
                 .toList();
     }
 
-    public List<Item> getLow() {
+    public List<Item> getLowStock() {
         return itemsById
                 .values()
                 .stream()
@@ -49,7 +54,7 @@ public class ItemRepository {
                 .toList();
     }
 
-    public List<Item> getMedium() {
+    public List<Item> getMediumStock() {
         return itemsById
                 .values()
                 .stream()
@@ -58,7 +63,7 @@ public class ItemRepository {
                 .toList();
     }
 
-    public List<Item> getHigh() {
+    public List<Item> getHighStock() {
         return itemsById
                 .values()
                 .stream()

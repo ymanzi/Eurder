@@ -39,7 +39,7 @@ public class CustomerService {
         Optional<Customer> customer = customerRepository.getById(userId);
 
         if (customer.isEmpty())
-            throw new NonExistentItemException("customer id");
+            throw new NonExistentItemException("customer");
 
         return customerMapper.toDto(customer.get());
     }

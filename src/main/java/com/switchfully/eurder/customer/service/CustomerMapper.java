@@ -12,9 +12,9 @@ import java.util.List;
 
 @Component
 public class CustomerMapper {
-    public Customer fromDto(CustomerDto customerDto) {
+    /*public Customer fromDto(CustomerDto customerDto) {
         return new Customer(customerDto.name(), customerDto.contact(), customerDto.address());
-    }
+    }*/
 
     public Customer fromDto(CreateCustomerDto createCustomerDto) {
         Name name = new Name(createCustomerDto.getFirstname(), createCustomerDto.getLastname());

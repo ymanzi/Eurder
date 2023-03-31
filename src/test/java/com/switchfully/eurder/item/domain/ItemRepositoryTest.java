@@ -34,8 +34,7 @@ class ItemRepositoryTest {
         itemRepository.save(itemForTest);
 
         //When
-        ItemDto updatedItemDto = new ItemDto(itemForTest.getId(), "updated", "updated", 500, 8);
-        Item updatedItem = itemMapper.fromDto(updatedItemDto);
+        Item updatedItem = new Item(itemForTest.getId(), "updated", "updated", 500, 36);
         Item returnedItem = itemRepository.update(updatedItem);
 
         //Then
@@ -65,5 +64,82 @@ class ItemRepositoryTest {
         Assertions.assertThat(listOfItem).containsExactlyElementsOf(List.of(itemForTest, item2, item1));
     }
 
+    @Test
+    void getLowStock_givenAPopulatedRepository_thenRetrieveAllItemWithLowStockSupply() {
+        //Given
+        itemRepository.save(itemForTest);
+        Item item1 = new Item("name", "description", 1.6, 30);
+        itemRepository.save(item1);
+        Item item2 = new Item("name", "description", 1.6, 3);
+        itemRepository.save(item2);
+        Item item3 = new Item("name", "description", 1.6, 5);
+        itemRepository.save(item3);
+        Item item4 = new Item("name", "description", 1.6, 8);
+        itemRepository.save(item4);
+        Item item5 = new Item("name", "description", 1.6, 0);
+        itemRepository.save(item5);
+        Item item6 = new Item("name", "description", 1.6, 10);
+        itemRepository.save(item6);
+
+        //When
+        List<Item> listOfItem = itemRepository.getLowStock();
+
+        //Then
+        listOfItem.stream().forEach(
+                (item) -> org.junit.jupiter.api.Assertions.assertTrue(item.getStockSupply().equals(Supply.STOCK_LOW))
+        );
+    }
+
+    @Test
+    void getMediumStock_givenAPopulatedRepository_thenRetrieveAllItemWithMediumStockSupply() {
+        //Given
+        itemRepository.save(itemForTest);
+        Item item1 = new Item("name", "description", 1.6, 30);
+        itemRepository.save(item1);
+        Item item2 = new Item("name", "description", 1.6, 3);
+        itemRepository.save(item2);
+        Item item3 = new Item("name", "description", 1.6, 5);
+        itemRepository.save(item3);
+        Item item4 = new Item("name", "description", 1.6, 8);
+        itemRepository.save(item4);
+        Item item5 = new Item("name", "description", 1.6, 0);
+        itemRepository.save(item5);
+        Item item6 = new Item("name", "description", 1.6, 10);
+        itemRepository.save(item6);
+
+        //When
+        List<Item> listOfItem = itemRepository.getMediumStock();
+
+        //Then
+        listOfItem.stream().forEach(
+                (item) -> org.junit.jupiter.api.Assertions.assertTrue(item.getStockSupply().equals(Supply.STOCK_MEDIUM))
+        );
+    }
+
+    @Test
+    void getHighStock_givenAPopulatedRepository_thenRetrieveAllItemWithHighStockSupply() {
+        //Given
+        itemRepository.save(itemForTest);
+        Item item1 = new Item("name", "description", 1.6, 30);
+        itemRepository.save(item1);
+        Item item2 = new Item("name", "description", 1.6, 3);
+        itemRepository.save(item2);
+        Item item3 = new Item("name", "description", 1.6, 5);
+        itemRepository.save(item3);
+        Item item4 = new Item("name", "description", 1.6, 8);
+        itemRepository.save(item4);
+        Item item5 = new Item("name", "description", 1.6, 0);
+        itemRepository.save(item5);
+        Item item6 = new Item("name", "description", 1.6, 10);
+        itemRepository.save(item6);
+
+        //When
+        List<Item> listOfItem = itemRepository.getHighStock();
+
+        //Then
+        listOfItem.stream().forEach(
+                (item) -> org.junit.jupiter.api.Assertions.assertTrue(item.getStockSupply().equals(Supply.STOCK_HIGH))
+        );
+    }
 
 }

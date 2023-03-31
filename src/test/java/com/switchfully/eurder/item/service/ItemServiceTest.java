@@ -43,7 +43,7 @@ class ItemServiceTest {
         ItemDto returnedItemDto = itemService.update(testItem.getId(), toUpdateItemDto, "admin");
 
         //Then
-        ItemDto updatedItemDto = new ItemDto(testItem.getId(), "updated", "updated", 500, 8);
+        ItemDto updatedItemDto = new ItemDto(testItem.getId(), "updated", "updated", 500);
         Assertions.assertThat(returnedItemDto).isEqualTo(updatedItemDto);
     }
 
@@ -86,5 +86,89 @@ class ItemServiceTest {
 
         //Then
         Assertions.assertThat(listOfItemDto).containsExactlyElementsOf(itemMapper.toDto(List.of(item2, item1, testItem)));
+    }
+
+    @Test
+    void getLow_asAdmin_thenRetrieveAllLowStockItems() {
+        //Given
+        Item item1 = new Item("low", "description", 1.6, 0);
+        Item item2 = new Item("low", "description", 1.6, 3);
+        Item item3 = new Item("medium", "description", 1.6, 5);
+        Item item4 = new Item("high", "description", 1.6, 10);
+        Item item5 = new Item("high", "description", 1.6, 20);
+        itemRepository.save(item1);
+        itemRepository.save(item2);
+        itemRepository.save(item3);
+        itemRepository.save(item4);
+        itemRepository.save(item5);
+
+        //When
+        List<ItemDto> listOfItemDto = itemService.getLow("admin");
+
+        //Then
+        listOfItemDto.stream().forEach(itemDto -> itemDto.getName().equals("low"));
+    }
+
+    @Test
+    void getMedium_asAdmin_thenRetrieveAllMediumStockItems() {
+        //Given
+        Item item1 = new Item("low", "description", 1.6, 0);
+        Item item2 = new Item("low", "description", 1.6, 3);
+        Item item3 = new Item("medium", "description", 1.6, 5);
+        Item item4 = new Item("high", "description", 1.6, 10);
+        Item item5 = new Item("high", "description", 1.6, 20);
+        itemRepository.save(item1);
+        itemRepository.save(item2);
+        itemRepository.save(item3);
+        itemRepository.save(item4);
+        itemRepository.save(item5);
+
+        //When
+        List<ItemDto> listOfItemDto = itemService.getMedium("admin");
+
+        //Then
+        listOfItemDto.stream().forEach(itemDto -> itemDto.getName().equals("medium"));
+    }
+
+    @Test
+    void getHigh_asAdmin_thenRetrieveAllHighStockItems() {
+        //Given
+        Item item1 = new Item("low", "description", 1.6, 0);
+        Item item2 = new Item("low", "description", 1.6, 3);
+        Item item3 = new Item("medium", "description", 1.6, 5);
+        Item item4 = new Item("high", "description", 1.6, 10);
+        Item item5 = new Item("high", "description", 1.6, 20);
+        itemRepository.save(item1);
+        itemRepository.save(item2);
+        itemRepository.save(item3);
+        itemRepository.save(item4);
+        itemRepository.save(item5);
+
+        //When
+        List<ItemDto> listOfItemDto = itemService.getHigh("admin");
+
+        //Then
+        listOfItemDto.stream().forEach(itemDto -> itemDto.getName().equals("high"));
+    }
+
+    @Test
+    void getLow_AsANonAdmin_thenThrowUnauthorizedException() {
+
+        //Then
+        org.junit.jupiter.api.Assertions.assertThrows(UnauthorizedException.class, () -> itemService.getLow("123"));
+    }
+
+    @Test
+    void getMedium_AsANonAdmin_thenThrowUnauthorizedException() {
+
+        //Then
+        org.junit.jupiter.api.Assertions.assertThrows(UnauthorizedException.class, () -> itemService.getMedium("123"));
+    }
+
+    @Test
+    void getHigh_AsANonAdmin_thenThrowUnauthorizedException() {
+
+        //Then
+        org.junit.jupiter.api.Assertions.assertThrows(UnauthorizedException.class, () -> itemService.getHigh("123"));
     }
 }

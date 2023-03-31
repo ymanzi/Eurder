@@ -31,10 +31,6 @@ public class CustomerRepository {
                 .toList();
     }
 
-    public Optional<Customer> getByEmail(String email) {
-        return Optional.ofNullable(customerByEmail.get(email));
-    }
-
     public Optional<Customer> getById(UUID id) {
         return customerByEmail
                 .values()

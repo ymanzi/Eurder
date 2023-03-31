@@ -5,9 +5,10 @@ import com.switchfully.eurder.item.domain.Item;
 import java.time.LocalDate;
 
 public class ItemGroup {
-    private final Item item;
-    private final int amount;
-    private final LocalDate shippingDate;
+    private Item item;
+    private int amount;
+    private LocalDate shippingDate;
+
 
     public ItemGroup(Item item, int amount) {
         this.item = item;
@@ -33,6 +34,7 @@ public class ItemGroup {
     public int getAmount() {
         return amount;
     }
+
 
     public LocalDate getShippingDate() {
         return shippingDate;

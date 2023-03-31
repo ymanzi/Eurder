@@ -38,7 +38,6 @@ class ItemMapperTest {
         assertEquals(itemDto.getName(), item.getName());
         assertEquals(itemDto.getDescription(), item.getDescription());
         assertEquals(itemDto.getPrice(), item.getPrice());
-        assertEquals(itemDto.getStockAmount(), item.getStockAmount());
     }
 
     @Test
@@ -60,7 +59,6 @@ class ItemMapperTest {
             assertEquals(itemDto3.getName(), item3.getName());
             assertEquals(itemDto3.getDescription(), item3.getDescription());
             assertEquals(itemDto3.getPrice(), item3.getPrice());
-            assertEquals(itemDto3.getStockAmount(), item3.getStockAmount());
         }
     }
 }

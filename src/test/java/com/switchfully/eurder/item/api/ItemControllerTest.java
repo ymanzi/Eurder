@@ -5,6 +5,7 @@ import com.switchfully.eurder.item.service.dto.ItemDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ class ItemControllerTest {
 
     @LocalServerPort
     private int port;
+
 
     @Test
     void create_whenTryingToSaveAsAdmin_thenReturn201StatusCode() {
@@ -125,6 +127,96 @@ class ItemControllerTest {
     }
 
     @Test
+    void getLow_AsANonAdmin_thenReturn401StatusCode() {
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .header("adminId", "123")
+                .when()
+                .port(port)
+                .get("/items/stock/low")
+                .then()
+                .contentType(ContentType.JSON)
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
+       }
+
+    @Test
+    void getLow_asAdmin_thenReturn200StatusCode() {
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .header("adminId", "admin")
+                .when()
+                .port(port)
+                .get("/items/stock/low")
+                .then()
+                .contentType(ContentType.JSON)
+                .assertThat()
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void getMedium_AsNonAdmin_thenReturn401StatusCode() {
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .header("adminId", "123")
+                .when()
+                .port(port)
+                .get("/items/stock/medium")
+                .then()
+                .contentType(ContentType.JSON)
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    @Test
+    void getMedium_asAdmin_thenReturn200StatusCode() {
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .header("adminId", "admin")
+                .when()
+                .port(port)
+                .get("/items/stock/medium")
+                .then()
+                .contentType(ContentType.JSON)
+                .assertThat()
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    void getHigh_AsANonAdmin_thenReturn401StatusCode() {
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .header("adminId", "123")
+                .when()
+                .port(port)
+                .get("/items/stock/high")
+                .then()
+                .contentType(ContentType.JSON)
+                .assertThat()
+                .statusCode(HttpStatus.UNAUTHORIZED.value());
+    }
+
+    @Test
+    void getHigh_asAdmin_thenReturn200StatusCode() {
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .header("adminId", "admin")
+                .when()
+                .port(port)
+                .get("/items/stock/high")
+                .then()
+                .contentType(ContentType.JSON)
+                .assertThat()
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
     void getAll_AsANonAdmin_thenReturn401StatusCode() {
         RestAssured
                 .given()
@@ -137,7 +229,7 @@ class ItemControllerTest {
                 .contentType(ContentType.JSON)
                 .assertThat()
                 .statusCode(HttpStatus.UNAUTHORIZED.value());
-       }
+    }
 
     @Test
     void getAll_asAnAdmin_thenReturn200StatusCode() {

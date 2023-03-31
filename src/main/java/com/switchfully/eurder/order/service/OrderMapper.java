@@ -1,17 +1,59 @@
 package com.switchfully.eurder.order.service;
 
+import com.switchfully.eurder.customer.domain.Address;
+import com.switchfully.eurder.customer.domain.CustomerRepository;
+import com.switchfully.eurder.order.domain.ItemGroup;
 import com.switchfully.eurder.order.domain.Order;
-import com.switchfully.eurder.order.service.dto.CreateOrderDto;
-import com.switchfully.eurder.order.service.dto.OrderDto;
+import com.switchfully.eurder.order.service.dto.*;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
 
 @Component
 public class OrderMapper {
-    public OrderDto toDto(Order order){
+    /*public OrderDto toDto(Order order){
         return new OrderDto(order.getOrderId(), order.getListOfItemsGroup(), order.getCustomerId());
+    }*/
+
+    public Order fromDto(CreateOrderDto createOrderDto, UUID customerId){
+        return new Order(createOrderDto.getListOfItemsGroup(), customerId);
     }
 
-    public Order fromDto(CreateOrderDto createOrderDto){
-        return new Order(createOrderDto.listOfItemsGroup(), createOrderDto.customerId());
+    public ReportItemGroupDto toDto(ItemGroup itemGroup){
+        String itemName = itemGroup.getItem().getName();
+        int amount = itemGroup.getAmount();
+        double price = itemGroup.getPrice();
+        return new ReportItemGroupDto(itemName, amount, price);
     }
+
+    public List<ReportItemGroupDto> toDto(List<ItemGroup> listOfItemGroup){
+        return listOfItemGroup
+                .stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    public ReportOrderDto toDto(Order order){
+        UUID id = order.getOrderId();
+        List<ReportItemGroupDto> listOfItemGroupDto = this.toDto(order.getListOfItemsGroup());
+        double price = order
+                        .getListOfItemsGroup()
+                        .stream()
+                        .map(itemGroup -> itemGroup.getPrice())
+                        .reduce(0.0, Double::sum);
+
+        return new ReportOrderDto(id, listOfItemGroupDto, price);
+    }
+
+    public ReportOrdersOfCustomerDto toReportDto(List<Order> customerOrders) {
+        List<ReportOrderDto> listOfReport = customerOrders
+                                                .stream()
+                                                .map(this::toDto)
+                                                .toList();
+        return new ReportOrdersOfCustomerDto(listOfReport);
+    }
+
+
 }

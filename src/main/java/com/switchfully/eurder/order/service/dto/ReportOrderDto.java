@@ -6,50 +6,50 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public final class OrderDto {
+public final class ReportOrderDto {
     private final UUID orderId;
-    private final List<ItemGroup> listOfItemsGroup;
-    private final UUID customerId;
+    private final List<ReportItemGroupDto> listOfItemsGroup;
+    private final double price;
 
-    public OrderDto(UUID orderId, List<ItemGroup> listOfItemsGroup, UUID customerId) {
+    public ReportOrderDto(UUID orderId, List<ReportItemGroupDto> listOfItemsGroup, double price) {
         this.orderId = orderId;
         this.listOfItemsGroup = listOfItemsGroup;
-        this.customerId = customerId;
+        this.price = price;
     }
 
     public UUID getOrderId() {
         return orderId;
     }
 
-    public List<ItemGroup> getListOfItemsGroup() {
+    public List<ReportItemGroupDto> getListOfItemsGroup() {
         return listOfItemsGroup;
     }
 
-    public UUID getCustomerId() {
-        return customerId;
+    public double getPrice() {
+        return price;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (OrderDto) obj;
+        var that = (ReportOrderDto) obj;
         return Objects.equals(this.orderId, that.orderId) &&
                 Objects.equals(this.listOfItemsGroup, that.listOfItemsGroup) &&
-                Objects.equals(this.customerId, that.customerId);
+                Double.doubleToLongBits(this.price) == Double.doubleToLongBits(that.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderId, listOfItemsGroup, customerId);
+        return Objects.hash(orderId, listOfItemsGroup, price);
     }
 
     @Override
     public String toString() {
-        return "OrderDto[" +
+        return "ReportOrderDto[" +
                 "orderId=" + orderId + ", " +
                 "listOfItemsGroup=" + listOfItemsGroup + ", " +
-                "customerId=" + customerId + ']';
+                "price=" + price + ']';
     }
 
 }

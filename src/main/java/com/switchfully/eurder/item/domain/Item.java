@@ -1,5 +1,6 @@
 package com.switchfully.eurder.item.domain;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.switchfully.eurder.exceptions.NegativeNumberInputException;
 import com.switchfully.eurder.utils.Utils;
 
@@ -17,6 +18,15 @@ public class Item {
     private Stock stock;
 
     //========================== CONSTRUCTOR ================================
+
+    @JsonCreator
+    public Item(UUID id, String name, String description, double price, Stock stock) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+    }
 
     public Item(UUID id, String name, String description, double price, int stockAmount) {
         this.id = id;
@@ -57,6 +67,10 @@ public class Item {
         return price;
     }
 
+    public Stock getStock() {
+        return stock;
+    }
+
     public int getStockAmount() {
         return stock.getAmount();
     }
@@ -67,21 +81,21 @@ public class Item {
 
     //========================== SETTERS ====================================
 
-    public void setName(String name) {
-        this.name = name;
-    }
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setStock(int stockAmount) {
-        this.stock = new Stock(stockAmount);
-    }
+//    public void setDescription(String description) {
+//        this.description = description;
+//    }
+//
+//    public void setPrice(double price) {
+//        this.price = price;
+//    }
+//
+//    public void setStock(int stockAmount) {
+//        this.stock = new Stock(stockAmount);
+//    }
 
     @Override
     public boolean equals(Object o) {

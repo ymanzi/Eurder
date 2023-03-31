@@ -1,20 +1,21 @@
 package com.switchfully.eurder.order.service.dto;
 
+import com.switchfully.eurder.customer.domain.Address;
 import com.switchfully.eurder.order.domain.ItemGroup;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public final class OrderDto {
+public final class OrderTodayDto {
     private final UUID orderId;
     private final List<ItemGroup> listOfItemsGroup;
-    private final UUID customerId;
+    private final Address address;
 
-    public OrderDto(UUID orderId, List<ItemGroup> listOfItemsGroup, UUID customerId) {
+    public OrderTodayDto(UUID orderId, List<ItemGroup> listOfItemsGroup, Address address) {
         this.orderId = orderId;
         this.listOfItemsGroup = listOfItemsGroup;
-        this.customerId = customerId;
+        this.address = address;
     }
 
     public UUID getOrderId() {
@@ -25,31 +26,31 @@ public final class OrderDto {
         return listOfItemsGroup;
     }
 
-    public UUID getCustomerId() {
-        return customerId;
+    public Address getAddress() {
+        return address;
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (OrderDto) obj;
+        var that = (OrderTodayDto) obj;
         return Objects.equals(this.orderId, that.orderId) &&
                 Objects.equals(this.listOfItemsGroup, that.listOfItemsGroup) &&
-                Objects.equals(this.customerId, that.customerId);
+                Objects.equals(this.address, that.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderId, listOfItemsGroup, customerId);
+        return Objects.hash(orderId, listOfItemsGroup, address);
     }
 
     @Override
     public String toString() {
-        return "OrderDto[" +
+        return "OrderTodayDto[" +
                 "orderId=" + orderId + ", " +
                 "listOfItemsGroup=" + listOfItemsGroup + ", " +
-                "customerId=" + customerId + ']';
+                "address=" + address + ']';
     }
 
 }

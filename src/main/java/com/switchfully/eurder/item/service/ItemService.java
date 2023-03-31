@@ -49,21 +49,21 @@ public class ItemService {
     public List<ItemDto> getLow(String adminId) {
         Utils.adminAccess(adminId);
 
-        List<Item> listOfItems = itemRepository.getLow();
+        List<Item> listOfItems = itemRepository.getLowStock();
         return itemMapper.toDto(listOfItems);
     }
 
     public List<ItemDto> getMedium(String adminId) {
         Utils.adminAccess(adminId);
 
-        List<Item> listOfItems = itemRepository.getMedium();
+        List<Item> listOfItems = itemRepository.getMediumStock();
         return itemMapper.toDto(listOfItems);
     }
 
     public List<ItemDto> getHigh(String adminId) {
         Utils.adminAccess(adminId);
 
-        List<Item> listOfItems = itemRepository.getHigh();
+        List<Item> listOfItems = itemRepository.getHighStock();
         return itemMapper.toDto(listOfItems);
     }
 }

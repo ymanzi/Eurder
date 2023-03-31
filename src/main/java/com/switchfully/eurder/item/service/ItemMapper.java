@@ -14,16 +14,12 @@ public class ItemMapper {
         return new Item(createItemDto.name(), createItemDto.description(), createItemDto.price(), createItemDto.stock());
     }
 
-    public Item fromDto(ItemDto itemDto) {
-        return new Item(itemDto.getId(), itemDto.getName(), itemDto.getDescription(), itemDto.getPrice(), itemDto.getStockAmount());
-    }
-
     public Item fromDto(UUID itemId, CreateItemDto createItemDto){
         return new Item(itemId, createItemDto.name(), createItemDto.description(), createItemDto.price(), createItemDto.stock());
     }
 
     public ItemDto toDto(Item item){
-        return new ItemDto(item.getId(), item.getName(), item.getDescription(), item.getPrice(), item.getStockAmount());
+        return new ItemDto(item.getId(), item.getName(), item.getDescription(), item.getPrice());
     }
 
     public List<ItemDto> toDto(List<Item> listOfItems){
