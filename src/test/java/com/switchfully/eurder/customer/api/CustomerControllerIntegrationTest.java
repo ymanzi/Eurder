@@ -1,10 +1,11 @@
 package com.switchfully.eurder.customer.api;
 
-import com.switchfully.eurder.customer.domain.Address;
-import com.switchfully.eurder.customer.domain.Contact;
-import com.switchfully.eurder.customer.domain.Name;
-import com.switchfully.eurder.customer.service.dto.CreateCustomerDto;
-import com.switchfully.eurder.customer.service.dto.CustomerDto;
+import com.switchfully.eurder.api.CustomerController;
+import com.switchfully.eurder.domain.Address;
+import com.switchfully.eurder.domain.Contact;
+import com.switchfully.eurder.domain.Name;
+import com.switchfully.eurder.service.dtos.CreateCustomerDto;
+import com.switchfully.eurder.service.dtos.CustomerDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;

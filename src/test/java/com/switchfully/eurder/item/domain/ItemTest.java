@@ -1,7 +1,8 @@
 package com.switchfully.eurder.item.domain;
 
-import com.switchfully.eurder.exceptions.MandatoryFieldException;
-import com.switchfully.eurder.exceptions.NegativeNumberInputException;
+import com.switchfully.eurder.domain.Item;
+import com.switchfully.eurder.infrastructure.exceptions.MandatoryFieldException;
+import com.switchfully.eurder.infrastructure.exceptions.NegativeNumberInputException;
 import org.junit.jupiter.api.Assertions;
 
 class ItemTest {

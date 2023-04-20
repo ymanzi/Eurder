@@ -1,8 +1,9 @@
 package com.switchfully.eurder.item.service;
 
-import com.switchfully.eurder.item.domain.Item;
-import com.switchfully.eurder.item.service.dto.CreateItemDto;
-import com.switchfully.eurder.item.service.dto.ItemDto;
+import com.switchfully.eurder.domain.Item;
+import com.switchfully.eurder.service.mappers.ItemMapper;
+import com.switchfully.eurder.service.dtos.CreateItemDto;
+import com.switchfully.eurder.service.dtos.ItemDto;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

@@ -1,32 +1,23 @@
 package com.switchfully.eurder.order.api;
 
-import com.switchfully.eurder.customer.domain.*;
-import com.switchfully.eurder.customer.service.dto.CreateCustomerDto;
-import com.switchfully.eurder.exceptions.UnauthorizedException;
-import com.switchfully.eurder.item.domain.Item;
-import com.switchfully.eurder.item.domain.ItemRepository;
-import com.switchfully.eurder.item.service.dto.CreateItemDto;
-import com.switchfully.eurder.item.service.dto.ItemDto;
-import com.switchfully.eurder.order.domain.ItemGroup;
-import com.switchfully.eurder.order.domain.Order;
-import com.switchfully.eurder.order.domain.OrderRepository;
-import com.switchfully.eurder.order.service.OrderMapper;
-import com.switchfully.eurder.order.service.OrderService;
-import com.switchfully.eurder.order.service.dto.CreateOrderDto;
-import com.switchfully.eurder.order.service.dto.ItemGroupDto;
-import com.switchfully.eurder.order.service.dto.ReportOrdersOfCustomerDto;
+import com.switchfully.eurder.api.OrderController;
+import com.switchfully.eurder.service.dtos.CreateCustomerDto;
+import com.switchfully.eurder.domain.Customer;
+import com.switchfully.eurder.domain.Item;
+import com.switchfully.eurder.service.dtos.CreateItemDto;
+import com.switchfully.eurder.service.dtos.CreateOrderDto;
+import com.switchfully.eurder.service.dtos.ItemGroupDto;
+import com.switchfully.eurder.service.dtos.ReportOrdersOfCustomerDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

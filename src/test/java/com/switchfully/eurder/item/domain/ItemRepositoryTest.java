@@ -1,8 +1,10 @@
 package com.switchfully.eurder.item.domain;
 
-import com.switchfully.eurder.exceptions.NonExistentItemException;
-import com.switchfully.eurder.item.service.ItemMapper;
-import com.switchfully.eurder.item.service.dto.ItemDto;
+import com.switchfully.eurder.domain.Item;
+import com.switchfully.eurder.domain.ItemRepository;
+import com.switchfully.eurder.domain.Supply;
+import com.switchfully.eurder.infrastructure.exceptions.NonExistentItemException;
+import com.switchfully.eurder.service.mappers.ItemMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,7 @@
 package com.switchfully.eurder.customer.domain;
 
-import com.switchfully.eurder.exceptions.CustomerWithThatEmailAlreadyExist;
+import com.switchfully.eurder.domain.*;
+import com.switchfully.eurder.infrastructure.exceptions.CustomerWithThatEmailAlreadyExist;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

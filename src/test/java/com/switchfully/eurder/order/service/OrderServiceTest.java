@@ -1,14 +1,15 @@
 package com.switchfully.eurder.order.service;
 
-import com.switchfully.eurder.customer.domain.*;
-import com.switchfully.eurder.exceptions.UnauthorizedException;
-import com.switchfully.eurder.item.domain.Item;
-import com.switchfully.eurder.item.domain.ItemRepository;
-import com.switchfully.eurder.order.domain.ItemGroup;
-import com.switchfully.eurder.order.domain.OrderRepository;
-import com.switchfully.eurder.order.service.dto.CreateOrderDto;
-import com.switchfully.eurder.order.service.dto.ItemGroupDto;
-import com.switchfully.eurder.order.service.dto.ReportOrdersOfCustomerDto;
+import com.switchfully.eurder.domain.*;
+import com.switchfully.eurder.infrastructure.exceptions.UnauthorizedException;
+import com.switchfully.eurder.domain.Item;
+import com.switchfully.eurder.domain.ItemRepository;
+import com.switchfully.eurder.domain.OrderRepository;
+import com.switchfully.eurder.service.mappers.OrderMapper;
+import com.switchfully.eurder.service.OrderService;
+import com.switchfully.eurder.service.dtos.CreateOrderDto;
+import com.switchfully.eurder.service.dtos.ItemGroupDto;
+import com.switchfully.eurder.service.dtos.ReportOrdersOfCustomerDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

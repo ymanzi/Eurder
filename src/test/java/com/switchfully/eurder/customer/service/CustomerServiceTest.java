@@ -1,10 +1,12 @@
 package com.switchfully.eurder.customer.service;
 
-import com.switchfully.eurder.customer.domain.*;
-import com.switchfully.eurder.customer.service.dto.CreateCustomerDto;
-import com.switchfully.eurder.customer.service.dto.CustomerDto;
-import com.switchfully.eurder.exceptions.NonExistentItemException;
-import com.switchfully.eurder.exceptions.UnauthorizedException;
+import com.switchfully.eurder.service.mappers.CustomerMapper;
+import com.switchfully.eurder.service.CustomerService;
+import com.switchfully.eurder.service.dtos.CreateCustomerDto;
+import com.switchfully.eurder.service.dtos.CustomerDto;
+import com.switchfully.eurder.domain.*;
+import com.switchfully.eurder.infrastructure.exceptions.NonExistentItemException;
+import com.switchfully.eurder.infrastructure.exceptions.UnauthorizedException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,11 +1,10 @@
 package com.switchfully.eurder.item.api;
 
-import com.switchfully.eurder.item.service.dto.CreateItemDto;
-import com.switchfully.eurder.item.service.dto.ItemDto;
+import com.switchfully.eurder.service.dtos.CreateItemDto;
+import com.switchfully.eurder.service.dtos.ItemDto;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
