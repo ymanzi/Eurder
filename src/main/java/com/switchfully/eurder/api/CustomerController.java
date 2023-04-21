@@ -3,6 +3,7 @@ package com.switchfully.eurder.api;
 import com.switchfully.eurder.service.CustomerService;
 import com.switchfully.eurder.service.dtos.CreateCustomerDto;
 import com.switchfully.eurder.service.dtos.CustomerDto;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -28,14 +29,14 @@ public class CustomerController {
     }
 
     @GetMapping(path = "/{userId}", produces = "application/json")
-    public CustomerDto getById(@PathVariable UUID userId, @RequestHeader String adminId){
+    public CustomerDto getById(@PathVariable int userId, @RequestHeader String adminId){
         return customerService.getById(userId, adminId);
     }
 
     //=======================================  POST ==================================================
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "", consumes = "application/json", produces = "application/json")
-    public CustomerDto create(@RequestBody CreateCustomerDto createCustomerDto){
+    public CustomerDto create(@RequestBody @Valid CreateCustomerDto createCustomerDto){
         return customerService.save(createCustomerDto);
     }
 }

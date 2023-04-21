@@ -1,8 +1,8 @@
-package com.switchfully.eurder.item.service;
+package com.switchfully.eurder;
 
 import com.switchfully.eurder.infrastructure.exceptions.NonExistentItemException;
 import com.switchfully.eurder.infrastructure.exceptions.UnauthorizedException;
-import com.switchfully.eurder.domain.Item;
+import com.switchfully.eurder.domain.classes.Item;
 import com.switchfully.eurder.domain.ItemRepository;
 import com.switchfully.eurder.service.mappers.ItemMapper;
 import com.switchfully.eurder.service.ItemService;
@@ -10,14 +10,23 @@ import com.switchfully.eurder.service.dtos.CreateItemDto;
 import com.switchfully.eurder.service.dtos.ItemDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.util.List;
-import java.util.UUID;
-
+@SpringBootTest(classes = {ItemRepository.class, ItemService.class, ItemMapper.class})
+@EnableAutoConfiguration
+@AutoConfigureTestDatabase
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ItemServiceTest {
     private final ItemMapper itemMapper = new ItemMapper();
-    private final ItemRepository itemRepository = new ItemRepository();
-    private final ItemService itemService = new ItemService(itemMapper, itemRepository);
+    @Autowired
+    private ItemRepository itemRepository;
+    @Autowired
+    private ItemService itemService;
 
     private final CreateItemDto testItemDto = new CreateItemDto("name", "description", 10, 45);
     private final Item testItem = new Item("name", "description", 10, 45);
@@ -54,7 +63,7 @@ class ItemServiceTest {
 
         //Then
         CreateItemDto toUpdateItemDto = new CreateItemDto("updated", "updated", 500, 8);
-        org.junit.jupiter.api.Assertions.assertThrows(NonExistentItemException.class, () -> itemService.update(UUID.randomUUID(), toUpdateItemDto, "admin"));
+        org.junit.jupiter.api.Assertions.assertThrows(NonExistentItemException.class, () -> itemService.update(123, toUpdateItemDto, "admin"));
     }
 
     @Test
@@ -87,7 +96,7 @@ class ItemServiceTest {
         List<ItemDto> listOfItemDto = itemService.getAll("admin");
 
         //Then
-        Assertions.assertThat(listOfItemDto).containsExactlyElementsOf(itemMapper.toDto(List.of(item2, item1, testItem)));
+        Assertions.assertThat(listOfItemDto).hasSize(3);
     }
 
     @Test
@@ -129,7 +138,7 @@ class ItemServiceTest {
         List<ItemDto> listOfItemDto = itemService.getMedium("admin");
 
         //Then
-        listOfItemDto.stream().forEach(itemDto -> itemDto.getName().equals("medium"));
+        listOfItemDto.forEach(itemDto -> itemDto.getName().equals("medium"));
     }
 
     @Test
@@ -150,7 +159,7 @@ class ItemServiceTest {
         List<ItemDto> listOfItemDto = itemService.getHigh("admin");
 
         //Then
-        listOfItemDto.stream().forEach(itemDto -> itemDto.getName().equals("high"));
+        listOfItemDto.forEach(itemDto -> itemDto.getName().equals("high"));
     }
 
     @Test

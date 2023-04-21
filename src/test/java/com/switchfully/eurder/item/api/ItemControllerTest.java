@@ -85,7 +85,7 @@ class ItemControllerTest {
                 .header("adminId", "admin")
                 .when()
                 .port(port)
-                .put("/items/" + itemDto.getId().toString())
+                .put("/items/" + itemDto.getId())
                 .then()
                 .assertThat()
                 .statusCode(HttpStatus.OK.value());

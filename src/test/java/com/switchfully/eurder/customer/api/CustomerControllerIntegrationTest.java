@@ -1,9 +1,9 @@
 package com.switchfully.eurder.customer.api;
 
 import com.switchfully.eurder.api.CustomerController;
-import com.switchfully.eurder.domain.Address;
-import com.switchfully.eurder.domain.Contact;
-import com.switchfully.eurder.domain.Name;
+import com.switchfully.eurder.domain.classes.Address;
+import com.switchfully.eurder.domain.classes.Contact;
+import com.switchfully.eurder.domain.classes.Name;
 import com.switchfully.eurder.service.dtos.CreateCustomerDto;
 import com.switchfully.eurder.service.dtos.CustomerDto;
 import io.restassured.RestAssured;
@@ -78,6 +78,7 @@ class CustomerControllerIntegrationTest {
         CustomerDto customerDto = customerList[0];
 
         //Then
+        Assertions.assertThat(customerList).contains(customerDto);
         assertEquals(customerDto.name(), new Name("first", "last"));
         assertEquals(customerDto.contact(), new Contact("email", "phone"));
         assertEquals(customerDto.address(), new Address("street", "16A", "1000", "City"));

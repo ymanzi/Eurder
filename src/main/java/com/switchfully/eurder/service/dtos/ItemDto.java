@@ -4,19 +4,19 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ItemDto {
-    private final UUID id;
+    private final int id;
     private final String name;
     private final String description;
     private final double price;
 
-    public ItemDto(UUID id, String name, String description, double price) {
+    public ItemDto(int id, String name, String description, double price) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 

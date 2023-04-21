@@ -1,7 +1,7 @@
 package com.switchfully.eurder.item.domain;
 
-import com.switchfully.eurder.domain.Stock;
-import com.switchfully.eurder.domain.Supply;
+import com.switchfully.eurder.domain.classes.Stock;
+import com.switchfully.eurder.domain.classes.Supply;
 import com.switchfully.eurder.infrastructure.exceptions.NegativeNumberInputException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

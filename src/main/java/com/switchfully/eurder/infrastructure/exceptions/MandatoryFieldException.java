@@ -1,4 +1,4 @@
-package com.switchfully.eurder.exceptions;
+package com.switchfully.eurder.infrastructure.exceptions;
 
 public class MandatoryFieldException extends RuntimeException {
     public MandatoryFieldException(String type) {

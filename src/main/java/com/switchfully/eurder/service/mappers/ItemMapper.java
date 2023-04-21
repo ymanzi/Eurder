@@ -1,6 +1,6 @@
 package com.switchfully.eurder.service.mappers;
 
-import com.switchfully.eurder.domain.Item;
+import com.switchfully.eurder.domain.classes.Item;
 import com.switchfully.eurder.service.dtos.CreateItemDto;
 import com.switchfully.eurder.service.dtos.ItemDto;
 import org.springframework.stereotype.Component;
@@ -14,9 +14,6 @@ public class ItemMapper {
         return new Item(createItemDto.name(), createItemDto.description(), createItemDto.price(), createItemDto.stock());
     }
 
-    public Item fromDto(UUID itemId, CreateItemDto createItemDto){
-        return new Item(itemId, createItemDto.name(), createItemDto.description(), createItemDto.price(), createItemDto.stock());
-    }
 
     public ItemDto toDto(Item item){
         return new ItemDto(item.getId(), item.getName(), item.getDescription(), item.getPrice());

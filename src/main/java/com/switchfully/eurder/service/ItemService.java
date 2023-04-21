@@ -1,18 +1,21 @@
 package com.switchfully.eurder.service;
 
-import com.switchfully.eurder.domain.Item;
+import com.switchfully.eurder.domain.classes.Item;
 import com.switchfully.eurder.domain.ItemRepository;
+import com.switchfully.eurder.domain.classes.Supply;
+import com.switchfully.eurder.infrastructure.exceptions.NonExistentItemException;
 import com.switchfully.eurder.service.dtos.CreateItemDto;
 import com.switchfully.eurder.service.dtos.ItemDto;
 import com.switchfully.eurder.service.mappers.ItemMapper;
 import com.switchfully.eurder.infrastructure.Utils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
+@Transactional
 public class ItemService {
 
     private final ItemMapper itemMapper;
@@ -32,39 +35,45 @@ public class ItemService {
         return itemMapper.toDto(savedItem);
     }
 
-    public ItemDto update(UUID itemId, CreateItemDto createItemDto, String adminId){
+    public ItemDto update(int itemId, CreateItemDto createItemDto, String adminId){
         Utils.adminAccess(adminId);
 
-        Item item = itemMapper.fromDto(itemId, createItemDto);
-        Item updatedItem = itemRepository.update(item);
-        return itemMapper.toDto(updatedItem);
+        Item item = itemRepository
+                .findById(itemId)
+                .orElseThrow(() -> new NonExistentItemException("id"));
+
+        item.setName(createItemDto.name());
+        item.setDescription(createItemDto.description());
+        item.setPrice(createItemDto.price());
+        item.setStockAmount(createItemDto.stock());
+        return itemMapper.toDto(item);
     }
 
     public List<ItemDto> getAll(String adminId) {
         Utils.adminAccess(adminId);
 
-        List<Item> listOfItems = itemRepository.getAllOrderedBySupply();
+        List<Item> listOfItems = itemRepository.findByOrderByStockAmountAsc();
         return itemMapper.toDto(listOfItems);
     }
 
     public List<ItemDto> getLow(String adminId) {
         Utils.adminAccess(adminId);
 
-        List<Item> listOfItems = itemRepository.getLowStock();
+        List<Item> listOfItems = itemRepository.findAllBySupply(Supply.STOCK_LOW);
         return itemMapper.toDto(listOfItems);
     }
 
     public List<ItemDto> getMedium(String adminId) {
         Utils.adminAccess(adminId);
 
-        List<Item> listOfItems = itemRepository.getMediumStock();
+        List<Item> listOfItems = itemRepository.findAllBySupply(Supply.STOCK_MEDIUM);
         return itemMapper.toDto(listOfItems);
     }
 
     public List<ItemDto> getHigh(String adminId) {
         Utils.adminAccess(adminId);
 
-        List<Item> listOfItems = itemRepository.getHighStock();
+        List<Item> listOfItems = itemRepository.findAllBySupply(Supply.STOCK_HIGH);
         return itemMapper.toDto(listOfItems);
     }
 }

@@ -51,7 +51,7 @@ public class ItemController {
     }
     //=======================================  PUT  ==================================================
     @PutMapping(path="/{itemId}", consumes = "application/json", produces = "application/json")
-    public ItemDto update(@PathVariable UUID itemId, @RequestBody CreateItemDto createItemDto, @RequestHeader String adminId){
+    public ItemDto update(@PathVariable int itemId, @RequestBody CreateItemDto createItemDto, @RequestHeader String adminId){
         return itemService.update(itemId, createItemDto, adminId);
     }
 }

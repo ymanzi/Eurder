@@ -1,4 +1,4 @@
-package com.switchfully.eurder.exceptions;
+package com.switchfully.eurder.infrastructure.exceptions;
 
 public class NegativeNumberInputException extends RuntimeException {
     public NegativeNumberInputException(String type) {

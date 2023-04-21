@@ -1,7 +1,7 @@
 package com.switchfully.eurder.service.dtos;
 
-import com.switchfully.eurder.domain.Address;
-import com.switchfully.eurder.domain.ItemGroup;
+import com.switchfully.eurder.domain.classes.Address;
+import com.switchfully.eurder.domain.classes.ItemGroup;
 
 import java.util.List;
 import java.util.Objects;

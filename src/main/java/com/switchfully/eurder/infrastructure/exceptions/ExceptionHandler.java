@@ -1,4 +1,4 @@
-package com.switchfully.eurder.exceptions;
+package com.switchfully.eurder.infrastructure.exceptions;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;

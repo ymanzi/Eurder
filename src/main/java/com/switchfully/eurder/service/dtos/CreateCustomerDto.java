@@ -1,14 +1,14 @@
 package com.switchfully.eurder.service.dtos;
 public class CreateCustomerDto {
 
-    private final String firstname;
-    private final String lastname;
-    private final String email;
-    private final String phone;
-    private final String street;
-    private final String houseNumber;
-    private final String zipCode;
-    private final String city;
+    private String firstname;
+    private String lastname;
+    private String email;
+    private String phone;
+    private String street;
+    private String houseNumber;
+    private String zipCode;
+    private String city;
 
     public CreateCustomerDto(String firstname
                             , String lastname

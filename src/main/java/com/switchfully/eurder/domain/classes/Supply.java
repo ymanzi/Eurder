@@ -1,4 +1,4 @@
-package com.switchfully.eurder.domain;
+package com.switchfully.eurder.domain.classes;
 
 public enum Supply {
     STOCK_LOW,

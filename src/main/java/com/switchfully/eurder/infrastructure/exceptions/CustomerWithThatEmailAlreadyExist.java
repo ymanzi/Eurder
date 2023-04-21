@@ -1,4 +1,4 @@
-package com.switchfully.eurder.exceptions;
+package com.switchfully.eurder.infrastructure.exceptions;
 
 public class CustomerWithThatEmailAlreadyExist extends RuntimeException {
     public CustomerWithThatEmailAlreadyExist() {

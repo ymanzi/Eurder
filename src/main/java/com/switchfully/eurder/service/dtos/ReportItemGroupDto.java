@@ -2,10 +2,10 @@ package com.switchfully.eurder.service.dtos;
 
 import java.util.Objects;
 
-public final class ReportItemGroupDto {
-    private final String name;
-    private final int amount;
-    private final double price;
+public class ReportItemGroupDto {
+    private String name;
+    private int amount;
+    private double price;
 
     public ReportItemGroupDto(String name, int amount, double price) {
         this.name = name;
