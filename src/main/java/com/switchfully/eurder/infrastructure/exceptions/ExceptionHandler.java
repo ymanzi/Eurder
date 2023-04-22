@@ -1,5 +1,6 @@
 package com.switchfully.eurder.infrastructure.exceptions;
 
+import com.switchfully.eurder.infrastructure.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,13 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(NonExistentItemException.class)
     protected void nonExistentItemException(NonExistentItemException ex,
                                                 HttpServletResponse response) throws IOException {
+        logger.error("Exception raised: ", ex);
+        response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(EntityNotFoundException.class)
+    protected void nonExistentItemException(EntityNotFoundException ex,
+                                            HttpServletResponse response) throws IOException {
         logger.error("Exception raised: ", ex);
         response.sendError(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
     }

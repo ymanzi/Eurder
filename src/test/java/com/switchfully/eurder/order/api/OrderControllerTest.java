@@ -1,25 +1,7 @@
 package com.switchfully.eurder.order.api;
 
-import com.switchfully.eurder.api.OrderController;
-import com.switchfully.eurder.service.dtos.CreateCustomerDto;
-import com.switchfully.eurder.domain.classes.Customer;
-import com.switchfully.eurder.domain.classes.Item;
-import com.switchfully.eurder.service.dtos.CreateItemDto;
-import com.switchfully.eurder.service.dtos.CreateOrderDto;
-import com.switchfully.eurder.service.dtos.ItemGroupDto;
-import com.switchfully.eurder.service.dtos.ReportOrdersOfCustomerDto;
-import io.restassured.RestAssured;
-import io.restassured.http.ContentType;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
-
-import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

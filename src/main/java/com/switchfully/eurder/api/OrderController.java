@@ -20,28 +20,28 @@ public class OrderController {
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
-//
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
-//    public double create(@RequestBody CreateOrderDto createOrderDto, @RequestHeader UUID customerId){
-//        return orderService.save(createOrderDto, customerId);
-//    }
-//
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PostMapping(path = "/{orderId}", produces = "application/json")
-//    public double orderAgain(@PathVariable UUID orderId, @RequestHeader UUID customerId){
-//        return orderService.orderAgain(orderId, customerId);
-//    }
-//
-//    @ResponseStatus(HttpStatus.OK)
-//    @GetMapping(path = "/", produces = "application/json")
-//    public ReportOrdersOfCustomerDto getByCustomer(@RequestHeader UUID customerId){
-//        return orderService.getByCustomerId(customerId);
-//    }
-//
-//    @ResponseStatus(HttpStatus.OK)
-//    @GetMapping(path = "/today", produces = "application/json")
-//    public List<OrderTodayDto> getTodayOrders(@RequestHeader String adminId){
-//        return orderService.getTodayOrders(adminId);
-//    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(path = "/", consumes = "application/json", produces = "application/json")
+    public double create(@RequestBody CreateOrderDto createOrderDto, @RequestHeader int customerId){
+        return orderService.save(createOrderDto, customerId);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(path = "/{orderId}", produces = "application/json")
+    public double orderAgain(@PathVariable int orderId, @RequestHeader int customerId){
+        return orderService.orderAgain(orderId, customerId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/", produces = "application/json")
+    public ReportOrdersOfCustomerDto getByCustomer(@RequestHeader int customerId){
+        return orderService.getByCustomerId(customerId);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(path = "/today", produces = "application/json")
+    public List<OrderTodayDto> getTodayOrders(@RequestHeader String adminId){
+        return orderService.getTodayOrders(adminId);
+    }
 }

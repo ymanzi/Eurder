@@ -22,7 +22,7 @@ public class OrderedItem {
     private int amount;
     @Column(name = "price")
     private double price;
-    @Column(name = "shipping_date")
+    @Column(name = "shipping_date", columnDefinition = "DATE")
     private LocalDate shippingDate;
 
     public OrderedItem() {
